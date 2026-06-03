@@ -79,10 +79,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
  
-# ─── LOAD DATA ───────────────────────────────────────────────────────────────
-@st.cache_data
-def load_data():
-    df = pd.read_csv("freelance_clean.csv")
  
     # Bersihkan & derive kolom berguna
     df["avg_hourly_usd"] = (df["min_hourly_usd"] + df["max_hourly_usd"]) / 2
