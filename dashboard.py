@@ -4,22 +4,6 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
-@st.cache_data
-def load_data():
-    
-    url = "https://github.com/username/repo/releases/download/v1.0.0/freelance_clean.csv"
-    
-   
-    df = pd.read_csv(url)
-    return df
-
-try:
-    df = load_data()
-    st.write("Data berhasil dimuat!")
-    st.dataframe(df.head())
-except Exception as e:
-    st.error(f"Gagal memuat data: {e}")
  
 # ─── PAGE CONFIG ─────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -78,26 +62,34 @@ st.markdown("""
     .stTabs [aria-selected="true"] { color: #7986cb !important; }
 </style>
 """, unsafe_allow_html=True)
- 
- 
+
+# ─── LOAD DATA  ────────────────────────────────
+@st.cache_data
+def load_data():
+    
+    url = "https://github.com/Sangdi-source/dashboard-capstone-gigvalue/releases/download/dataset/freelance_clean.csv"
+    
+    df = pd.read_csv(url)
+
     # Bersihkan & derive kolom berguna
     df["avg_hourly_usd"] = (df["min_hourly_usd"] + df["max_hourly_usd"]) / 2
- 
-    # Simplify category: ambil keyword pertama
+    
     def simplify_category(cat):
-        if pd.isna(cat):
-            return "Other"
+        if pd.isna(cat): return "Other"
         first = str(cat).split(",")[0].strip()
         return first if len(first) <= 35 else first[:35]
- 
+
     df["category_simple"] = df["category"].apply(simplify_category)
- 
-    # Normalize experience level
     df["experience_level"] = df["experience_level"].fillna("Unknown")
- 
+    
     return df
- 
-df = load_data()
+
+# Jalankan loader
+try:
+    df = load_data()
+except Exception as e:
+    st.error(f"Gagal memuat data: {e}")
+    st.stop() # Berhenti jika gagal memuat data
  
 # ─── SIDEBAR FILTERS ─────────────────────────────────────────────────────────
 with st.sidebar:
