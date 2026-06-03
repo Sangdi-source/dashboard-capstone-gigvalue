@@ -7,15 +7,13 @@ from plotly.subplots import make_subplots
 
 @st.cache_data
 def load_data():
-    # Gunakan direct link dari GitHub Release
+    
     url = "https://github.com/username/repo/releases/download/v1.0.0/freelance_clean.csv"
     
-    # Jika file di dalam zip, Anda mungkin perlu library 'requests' atau 'zipfile'
-    # Tapi jika Anda upload .csv langsung di release, ini akan langsung jalan:
+   
     df = pd.read_csv(url)
     return df
 
-# Panggil fungsinya
 try:
     df = load_data()
     st.write("Data berhasil dimuat!")
