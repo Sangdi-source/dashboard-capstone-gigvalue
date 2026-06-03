@@ -4,6 +4,24 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+
+@st.cache_data
+def load_data():
+    # Gunakan direct link dari GitHub Release
+    url = "https://github.com/username/repo/releases/download/v1.0.0/freelance_clean.csv"
+    
+    # Jika file di dalam zip, Anda mungkin perlu library 'requests' atau 'zipfile'
+    # Tapi jika Anda upload .csv langsung di release, ini akan langsung jalan:
+    df = pd.read_csv(url)
+    return df
+
+# Panggil fungsinya
+try:
+    df = load_data()
+    st.write("Data berhasil dimuat!")
+    st.dataframe(df.head())
+except Exception as e:
+    st.error(f"Gagal memuat data: {e}")
  
 # ─── PAGE CONFIG ─────────────────────────────────────────────────────────────
 st.set_page_config(
